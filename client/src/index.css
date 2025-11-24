@@ -1,11 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap');
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap');
 
-*{
+* {
     font-family: 'Rethink Sans', sans-serif;
 }
-button{
+
+button {
     @apply cursor-pointer;
 }
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
+
+.cl-drawerRoot {
+     z-index: 100;
+}

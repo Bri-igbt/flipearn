@@ -4,16 +4,34 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7ed5efb8-f366-4fa8-aebe-77434c24bfbb" name="Changes" comment="" />
+    <list default="true" id="7ed5efb8-f366-4fa8-aebe-77434c24bfbb" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/client/src/components/CTA.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/FilterSidebar.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/Footer.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/components/PricingPlans.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/LatestListing.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/LatestListing.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ListingCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ListingCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/MarketPlace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/MarketPlace.jsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
   <component name="ProjectId" id="35kTz2tnLcNbSm9rr8kxB2iD2Xa" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -23,6 +41,8 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
     "junie.onboarding.icon.badge.shown": "true",
     "last_opened_file_path": "/Users/mac/Desktop/flipearn/client/public",
     "node.js.detected.package.eslint": "true",
@@ -54,11 +74,17 @@
       <option name="presentableId" value="Default" />
       <updated>1763653329488</updated>
       <workItem from="1763653332684" duration="682000" />
-      <workItem from="1763654647513" duration="15271000" />
+      <workItem from="1763654647513" duration="17438000" />
+      <workItem from="1763973868005" duration="14278000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="javascript:npm:react" />
+    <option featureType="dependencySupport" implementationName="javascript:npm:tailwindcss" />
+    <option featureType="dependencySupport" implementationName="javascript:npm:vite" />
   </component>
 </project>
