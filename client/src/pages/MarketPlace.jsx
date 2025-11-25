@@ -3,13 +3,14 @@ import {ArrowLeftIcon, Filter} from "lucide-react";
 import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import ListingCard from "../components/ListingCard.jsx";
+import FilterSidebar from "../components/FilterSidebar.jsx";
 
 const MarketPlace = () => {
     const navigate = useNavigate();
     const [showFilterPhone, setShowFilterPhone] = useState(false)
     const [filters, setFilters] = useState({
         platform: null,
-        maxPrice: 10000,
+        maxPrice: 100000,
         minFollowers: 0,
         niche: null,
         verified: false,
@@ -32,10 +33,16 @@ const MarketPlace = () => {
                     <Filter  className='size-4'/>
                     Filters
                 </button>
+
             </div>
 
             <div className='relative flex items-start justify-between gap-8 pb-8'>
-                <div>Filter</div>
+                <FilterSidebar
+                    setFilters={setFilters}
+                    filters={filters}
+                    setShowFilterPhone={setShowFilterPhone}
+                    showFilterPhone={showFilterPhone}
+                />
 
                 <div className='flex-1 grid xl:grid-cols-2 gap-4'>
                     {filteredListings.sort((a,b)=> a.featured ? -1 : b.featured ? 1 : 0).map((listing, index) => (

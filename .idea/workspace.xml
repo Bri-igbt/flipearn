@@ -5,16 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7ed5efb8-f366-4fa8-aebe-77434c24bfbb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/src/components/CTA.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/FilterSidebar.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/Footer.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/PricingPlans.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/LatestListing.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/LatestListing.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/ListingCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ListingCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/FilterSidebar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/FilterSidebar.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Home.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/pages/MarketPlace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/MarketPlace.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -75,7 +69,7 @@
       <updated>1763653329488</updated>
       <workItem from="1763653332684" duration="682000" />
       <workItem from="1763654647513" duration="17438000" />
-      <workItem from="1763973868005" duration="14278000" />
+      <workItem from="1763973868005" duration="28192000" />
     </task>
     <servers />
   </component>
@@ -86,5 +80,17 @@
     <option featureType="dependencySupport" implementationName="javascript:npm:react" />
     <option featureType="dependencySupport" implementationName="javascript:npm:tailwindcss" />
     <option featureType="dependencySupport" implementationName="javascript:npm:vite" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/client/src/components/FilterSidebar.jsx</url>
+          <line>87</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
