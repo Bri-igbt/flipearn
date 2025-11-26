@@ -34,6 +34,20 @@ const FilterSidebar = ({showFilterPhone, setShowFilterPhone, filters, setFilters
         setFilters({...filters, ...newFilters})
     }
 
+    const onClearFilters = () => {
+        if(search) {
+            navigate(`/marketplace`)
+        }
+        setFilters({
+            platforms: null,
+            maxPrice: 100000,
+            minPrice: 0,
+            niche: null,
+            verified: false,
+            monetized: false,
+        })
+    }
+
     const platforms = [
         {value: 'youtube', label: 'Youtube'},
         {value: 'instagram', label: 'Instagram'},
@@ -43,6 +57,25 @@ const FilterSidebar = ({showFilterPhone, setShowFilterPhone, filters, setFilters
         {value: 'tiktok', label: 'TikTok'},
         {value: 'discord', label: 'Discord'},
         {value: 'twitch', label: 'Twitch'},
+    ]
+
+    const niche = [
+        { value: "lifestyle", label: "Lifestyle"},
+        { value: "fitness", label: "Fitness"},
+        { value: "food", label: "Food"},
+        { value: "travel", label: "Travel"},
+        { value: "tech", label: "Tech"},
+        { value: "fashion", label: "Fashion"},
+        { value: "gaming", label: "Gaming"},
+        { value: "beauty", label: "Beauty"},
+        { value: "business", label: "Business"},
+        { value: "entertainment", label: "Entertainment"},
+        { value: "education", label: "Education"},
+        { value: "music", label: "Music"},
+        { value: "sport", label: "Sport"},
+        { value: "art", label: "Art"},
+        { value: "finance", label: "Finance"},
+        { value: "health", label: "Health"},
     ]
 
     return (
@@ -61,7 +94,7 @@ const FilterSidebar = ({showFilterPhone, setShowFilterPhone, filters, setFilters
 
                     <div className='flex items-center gap-2'>
                         <XIcon
-                            onClick={()=>setShowFilterPhone(false)}
+                            onClick={onClearFilters}
                             className='size-6 p-1 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded transition-colors cursor-pointer'
                         />
 
@@ -170,7 +203,7 @@ const FilterSidebar = ({showFilterPhone, setShowFilterPhone, filters, setFilters
             {/* Niche Filter*/}
                 <div>
                     <button onClick={()=> toggleSection("niche")} className='flex justify-between items-center w-full mb-3'>
-                        <label className='text-sm font-medium text-gray-800'>Minimum Followers</label>
+                        <label className='text-sm font-medium text-gray-800'>Niche</label>
                         <ChevronDown className={`size-4 transition-transform ${expandedSection.niche ? 'rotate-180' : ''}`}/>
                     </button>
 
@@ -180,8 +213,43 @@ const FilterSidebar = ({showFilterPhone, setShowFilterPhone, filters, setFilters
                             onChange={(e)=> onFilterChange({...filters, niche: e.target.value || null})}
                             className='w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-700 outline-indigo-500'
                         >
-
+                            <option value=''>Any niches</option>
+                            {niche.map((niche) => (
+                                <option key={niche.value} value={niche.value}>
+                                    {niche.label}
+                                </option>
+                            ))}
                         </select>
+                    )}
+                </div>
+
+            {/*verification status*/}
+                <div>
+                    <button onClick={()=> toggleSection("status")} className='flex justify-between items-center w-full mb-3'>
+                        <label className='text-sm font-medium text-gray-800'>Account Status</label>
+                        <ChevronDown className={`size-4 transition-transform ${expandedSection.status ? 'rotate-180' : ''}`}/>
+                    </button>
+
+                    {expandedSection.status && (
+                        <div className='space-y-3'>
+                            <label className='flex items-center space-x-2 cursor-pointer'>
+                                <input
+                                    type='checkbox'
+                                    checked={filters.verified || false}
+                                    onChange={(e)=> onFilterChange({...filters, verified: e.target.checked })}
+                                />
+                                <span className='text-sm text-gray-700 '>Verified account only</span>
+                            </label>
+
+                            <label className='flex items-center space-x-2 cursor-pointer'>
+                                <input
+                                    type='checkbox'
+                                    checked={filters.monetized || false}
+                                    onChange={(e)=> onFilterChange({...filters, monetized: e.target.checked })}
+                                />
+                                <span className='text-sm text-gray-700 '>Monetized account only</span>
+                            </label>
+                        </div>
                     )}
                 </div>
             </div>
