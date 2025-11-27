@@ -1,18 +1,20 @@
 import React, {useEffect, useState} from 'react'
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {getProfileLink, platformIcons} from "../assets/assets.jsx";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {
     ArrowLeftIcon,
-    ArrowUpRightFromSquare,
+    ArrowUpRightFromSquare, Calendar,
     CheckCircle2,
-    ChevronLeftIcon,
-    DollarSign,
-    Loader2Icon
+    ChevronLeftIcon, ChevronRightIcon,
+    DollarSign, Eye, LineChart,
+    Loader2Icon, MapPin, MessageSquareMoreIcon, ShoppingBagIcon, Users
 } from "lucide-react";
+import {setChat} from "../app/features/ChatSlice.js";
 
 const ListingDetails = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch();
     const currency = import.meta.env.VITE_CURRENCY || '$';
 
     const [listing, setListing] = useState(null)
@@ -23,6 +25,18 @@ const ListingDetails = () => {
 
     const { listingId } = useParams()
     const {listings} = useSelector((state)=> state.listing)
+
+    const handleNext = () => setCurrent((prev) => (prev === images.length - 1 ? 0 : prev + 1))
+
+    const handlePrev = () => setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1))
+
+    const chatBox = () => {
+        dispatch(setChat({listing: listing}))
+    }
+
+    const purchaseAccount = async () => {
+
+    }
 
     useEffect(() => {
         const listing = listings.find((listing)=>listing.id === listingId);
@@ -93,30 +107,177 @@ const ListingDetails = () => {
                                 <h4 className='text-gray-800 font-semibold'>Screenshot & Proof</h4>
                             </div>
 
-                        {/* Slider contain */}
-                            <div className='relative aspect-video w-full overflow-hidden'>
-                                <div className='flex transition-transform duration-300 ease-in-out' style={{transform: `translateX(-${current * 100}%)`}}>
-                                    {images.map((image, index)=> (
-                                        <img
-                                            key={index}
-                                            src={image}
-                                            alt='listing-screenshot'
-                                            className='w-full shrink-0' />
-                                    ))}
-                                </div>
+                            {/* Slider contain */}
+                                <div className='relative aspect-video w-full overflow-hidden'>
+                                    <div className='flex transition-transform duration-300 ease-in-out' style={{transform: `translateX(-${current * 100}%)`}}>
+                                        {images.map((image, index)=> (
+                                            <img
+                                                key={index}
+                                                src={image}
+                                                alt='listing-screenshot'
+                                                className='w-full shrink-0' />
+                                        ))}
+                                    </div>
 
-                                {/*Navigation Buttons*/}
-                                <button>
-                                    <ChevronLeftIcon className='w-5 h-5 text-gray-700' />
-                                </button>
-                            </div>
+                                    {/*Navigation Buttons*/}
+                                    <button onClick={handlePrev} className='absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white rounded-full shadow p-2'>
+                                        <ChevronLeftIcon className='w-5 h-5 text-gray-700' />
+                                    </button>
+
+                                    <button onClick={handleNext} className='absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-white/70 hover:bg-white rounded-full shadow p-2'>
+                                        <ChevronRightIcon className='w-5 h-5 text-gray-700' />
+                                    </button>
+
+                                {/* Dot Indicators */}
+                                    <div className='absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2'>
+                                        {images.map((_, index) => (
+                                            <button
+                                                key={index}
+                                                className={`w-2.5 h-2.5 rounded-full ${current === index ? 'bg-indigo-600' : 'bg-gray-300'} `}
+                                                onClick={() => setCurrent(index)}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
                         </div>
                     )}
                 </div>
+
+                {/* Account Metrics*/}
+                    <div className='bg-white rounded-xl border border-gray-200 mb-5'>
+                        <div className='p-4 border-b border-gray-100'>
+                            <h4 className='text-gray-800 font-semibold'>Account Metrics</h4>
+                        </div>
+
+                        <div className='grid grid-cols-2 gap-4 p-4 md:grid-cols-4 text-center'>
+                            <div>
+                                <Users className='mx-auto w-5 h-5 text-gray-400 mb-1'/>
+                                <p className='text-gray-800 font-semibold'>{listing.followers_count?.toLocaleString()}</p>
+                                <p className='text-gray-500 text-sm'>Followers</p>
+                            </div>
+
+                            <div>
+                                <LineChart className='mx-auto w-5 h-5 text-gray-400 mb-1'/>
+                                <p className='text-gray-800 font-semibold'>{listing.engagement_rate}%</p>
+                                <p className='text-gray-500 text-sm'>Engagement</p>
+                            </div>
+
+                            <div>
+                                <Eye className='mx-auto w-5 h-5 text-gray-400 mb-1'/>
+                                <p className='text-gray-800 font-semibold'>{listing.monthly_views.toLocaleString()}</p>
+                                <p className='text-gray-500 text-sm'>Monthly Views</p>
+                            </div>
+
+                            <div>
+                                <Calendar className='mx-auto w-5 h-5 text-gray-400 mb-1'/>
+                                <p className='text-gray-800 font-semibold'>{new Date(listing.createdAt).toLocaleDateString()}</p>
+                                <p className='text-gray-500 text-sm'>Listed</p>
+                            </div>
+                        </div>
+                    </div>
+
+                {/* Description */}
+                    <div className='bg-white rounded-xl border border-gray-200 mb-5'>
+                        <div className='p-4 border-b border-gray-100'>
+                            <h4 className='text-gray-800 font-semibold'>Description</h4>
+                        </div>
+
+                        <div className='p-4 text-sm text-gray-600'>{listing.description }</div>
+                    </div>
+
+                {/* Additional Details */}
+                    <div className='bg-white rounded-xl border border-gray-200 mb-5'>
+                        <div className='p-4 border-b border-gray-100'>
+                            <h4 className='text-gray-800 font-semibold'>Additional Details</h4>
+                        </div>
+
+                        <div className='grid grid-cols-1 gap-6 p-4 md:grid-cols-2 text-sm'>
+                            <div>
+                                <p className='text-gray-500'>Niche</p>
+                                <p className='font-medium capitalize'>{listing.niche}</p>
+                            </div>
+
+                            <div>
+                                <p className='text-gray-500'>Primary Country</p>
+                                <p className='flex items-center font-medium'>
+                                    <MapPin className='w-4 h-4 mr-1'/>
+                                    {listing.country}
+                                </p>
+                            </div>
+
+                            <div>
+                                <p className='text-gray-500'>Audience Age</p>
+                                <p className=' font-medium'>
+                                    {listing.age_range}
+                                </p>
+                            </div>
+
+                            <div>
+                                <p className='text-gray-500'>Platform Verified</p>
+                                <p className=' font-medium'>
+                                    {listing.platformAssured ? 'Yes' : 'No'}
+                                </p>
+                            </div>
+
+                            <div>
+                                <p className='text-gray-500'>Monetization</p>
+                                <p className=' font-medium'>
+                                    {listing.monetized ? "Enabled" : "Disabled"}
+                                </p>
+                            </div>
+
+                            <div>
+                                <p className='text-gray-500'>Status</p>
+                                <p className=' font-medium'>
+                                    {listing.status}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div></div>
+                {/* Sold Info & Purchased Option */}
+                <div className='bg-white min-w-full md:min-w-[370px] rounded-xl border border-gray-200 p-5 max-md:mb-10'>
+                    <h4 className='font-semibold text-gray-800 mb-4'>Seller Information</h4>
+                    <div className='flex items-center gap-4 mb-2'>
+                        <img src={listing.owner?.image} alt='seller-profile' className='size-10 rounded-full' />
+
+                        <div>
+                            <p className='font-medium text-gray-800'>{listing.owner?.name}</p>
+                            <p className='text-sm text-gray-500'>{listing.owner?.email}</p>
+                        </div>
+                    </div>
+
+                    <div className='flex items-center justify-between text-sm text-gray-600 mb-4'>
+                        <p>
+                            Member Since
+                            <span className='font-medium'>
+                                {new Date(listing.owner?.createdAt).toLocaleString()}
+                            </span>
+                        </p>
+                    </div>
+
+                    <button onClick={chatBox} className='flex items-center justify-center gap-2 w-full text-sm font-medium py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition'>
+                        <MessageSquareMoreIcon className='size-4'/>
+                        Chat
+                    </button>
+
+                    {listing.isCredentialChanged && (
+                        <button onClick={purchaseAccount} className='flex mt-2 items-center justify-center gap-2 w-full text-sm font-medium py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition'>
+                            <ShoppingBagIcon className='size-4' />
+                            Purchase
+                        </button>
+                    )}
+                </div>
             </div>
+
+            {/* Footer Section */}
+            <div className='bg-white border-t border-gray-200 p-4 text-center mt-28'>
+                <p className='text-sm text-gray-500'>
+                    © {new Date().getFullYear()} <span className='text-indigo-600'>FlipEarn</span> . All rights reserved.
+                </p>
+            </div>
+
         </div>
     ) : (
         <div className='flex justify-center items-center h-screen'>

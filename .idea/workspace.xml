@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7ed5efb8-f366-4fa8-aebe-77434c24bfbb" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/client/src/app/features/ChatSlice.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/FilterSidebar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/FilterSidebar.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/pages/ListingDetails.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ListingDetails.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/MarketPlace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/MarketPlace.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +70,7 @@
       <workItem from="1763653332684" duration="682000" />
       <workItem from="1763654647513" duration="17438000" />
       <workItem from="1763973868005" duration="35939000" />
-      <workItem from="1764151880062" duration="7441000" />
+      <workItem from="1764151880062" duration="15457000" />
     </task>
     <servers />
   </component>
@@ -93,9 +92,21 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/pages/ListingDetails.jsx</url>
-          <line>46</line>
+          <line>58</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/client/src/pages/ListingDetails.jsx</url>
+          <line>57</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/client/src/pages/ListingDetails.jsx</url>
+          <line>100</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
