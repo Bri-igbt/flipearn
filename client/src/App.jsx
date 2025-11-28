@@ -9,6 +9,7 @@ import Messages from "./pages/Messages.jsx";
 import MyOrders from "./pages/MyOrders.jsx";
 import Loading from "./pages/Loading.jsx";
 import Navbar from "./components/Navbar.jsx";
+import Chatbox from "./components/Chatbox.jsx";
 
 
 const App = () => {
@@ -27,6 +28,7 @@ const App = () => {
             <Route path='/my-orders' element={<MyOrders/>} />
             <Route path='/loading' element={<Loading/>} />
         </Routes>
+        <Chatbox />
     </div>
   )
 }
