@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7ed5efb8-f366-4fa8-aebe-77434c24bfbb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/src/components/CredentialSubmission.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/WithdrawModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/ManageListing.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ManageListing.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/MyListing.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/MyListing.jsx" afterDir="false" />
-    </list>
+    <list default="true" id="7ed5efb8-f366-4fa8-aebe-77434c24bfbb" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -73,7 +66,7 @@
       <workItem from="1763653332684" duration="682000" />
       <workItem from="1763654647513" duration="17438000" />
       <workItem from="1763973868005" duration="35939000" />
-      <workItem from="1764151880062" duration="61227000" />
+      <workItem from="1764151880062" duration="62086000" />
     </task>
     <servers />
   </component>
