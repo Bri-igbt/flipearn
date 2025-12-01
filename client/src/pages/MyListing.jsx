@@ -1,24 +1,28 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {
-    ArrowDownCircleIcon,
-    CheckCircle,
+    ArrowDownCircleIcon, Ban, BanIcon,
+    CheckCircle, Clock,
     CoinsIcon,
-    DollarSign,
-    Eye, Lock,
-    PlusIcon, StarIcon,
+    DollarSign, Edit,
+    Eye, EyeIcon, EyeOffIcon, Lock,
+    PlusIcon, StarIcon, TrashIcon,
     TrendingUp, UserIcon,
-    WalletIcon
+    WalletIcon, XCircle
 } from "lucide-react";
 import StatsCard from "../components/StatsCard.jsx";
 import {platformIcons} from "../assets/assets.jsx";
+import CredentialSubmission from "../components/CredentialSubmission.jsx";
+import WithdrawModal from "../components/WithdrawModal.jsx";
 
 const MyListing = () => {
     const {userListings, balance} = useSelector((state) => state.listing);
-
     const currency = import.meta.env.VITE_CURRENCY || '$';
     const navigate = useNavigate();
+
+    const [showWithdrawal, setShowWithdrawal] = useState(null)
+    const [showCredentialSubmission, setShowCredentialSubmission] = useState(null)
 
     const totalValue = userListings.reduce((sum, listing) => sum + (listing.price || 0), 0);
     const activeListings = userListings.filter((listing) => listing.status === 'active').length;
@@ -29,6 +33,50 @@ const MyListing = () => {
         if(num >=1000) return (num/1000).toFixed(1)+'K';
         return num?.toLocaleString() || "0"
     }
+
+    const getStatusIcon = (status) => {
+        switch (status) {
+            case "active":
+                return <CheckCircle className='size-3.5' />;
+            case "ban":
+                return <Ban className='size-3.5' />;
+            case "sold":
+                return <DollarSign className='size-3.5' />;
+            case "inactive":
+                return <XCircle className='size-3.5' />;
+            default:
+                return <Clock className='size-3.5' />;
+        }
+    }
+
+    const getStatusColor = (status) => {
+        switch (status) {
+            case "active":
+                return  "text-green-800";
+            case "ban":
+                return "text-red-800";
+            case "sold":
+                return "text-indigo-800";
+            case "inactive":
+                return "text-gray-800";
+            default:
+                return "text-gray-800";
+        }
+    }
+
+    const toggleStatus = async (listingId) => {
+
+    }
+
+    const deleteListing = async (listingId) => {
+
+    }
+
+    const markAsFeatured = async (listingId) => {
+
+    }
+
+
 
     return (
         <div className='px-6 md:px-16 lg:px-24 xl:px-32 pt-8'>
@@ -83,7 +131,7 @@ const MyListing = () => {
                     {label: 'Withdrawn', value: balance.withdrawn, icon: ArrowDownCircleIcon},
                     {label: 'Available', value: balance.available, icon: CoinsIcon},
                 ].map((item, index) => (
-                    <div key={index} className='flex flex-1 items-center justify-between p-4 rounded-lg border border-gray-100 cursor-pointer'>
+                    <div onClick={()=> item.label === "Available" && setShowWithdrawal(true)} key={index} className='flex flex-1 items-center justify-between p-4 rounded-lg border border-gray-100 cursor-pointer'>
                         <div className='flex items-center gap-3'>
                             <item.icon className='w-6 h-6 text-gray-500'/>
                             <span className='text-gray-600 font-medium'>{item.label}</span>
@@ -129,7 +177,7 @@ const MyListing = () => {
                                                             <div className='bg-white text-gray-600 text-xs rounded boder border-gray-200 p-2 px-3'>
                                                                 {!listing.isCredentialSubmitted && (
                                                                     <>
-                                                                        <button className='flex items-center gap-2 text-nowrap'>
+                                                                        <button onClick={()=> setShowCredentialSubmission(listing)} className='flex items-center gap-2 text-nowrap'>
                                                                             Add Credentials
                                                                         </button>
                                                                         <hr className='my-2 border-gray-200' />
@@ -158,6 +206,7 @@ const MyListing = () => {
                                                         <StarIcon
                                                             size={18}
                                                             className={`text-yellow-500 cursor-pointer ${listing.featured && 'fill-yellow-500'}`}
+                                                            onClick={()=> markAsFeatured(listing.id)}
                                                         />
                                                     )}
                                             </div>
@@ -175,6 +224,43 @@ const MyListing = () => {
                                             <UserIcon className='w-5 h-5 text-gray-400' />
                                             <span>{numberFormat(listing.followers_count)} followers</span>
                                         </div>
+
+                                        <span className={`flex items-center justify-end gap-1 ${getStatusColor(listing.status)} `}>
+                                            {getStatusIcon(listing.status)} {" "}
+                                           <span>{listing.status}</span>
+                                        </span>
+
+                                         <div className='flex items-center space-x-2'>
+                                             <TrendingUp className='w-5 h-5 text-gray-400' />
+                                             <span className='text-gray-600'>{listing.engagement_rate}% engagement</span>
+                                         </div>
+                                    </div>
+
+                                    <div className='flex items-center justify-between pt-3 border-t border-gray-200'>
+                                        <span className='text-2xl font-bold text-gray-800'>
+                                            {currency}
+                                            {listing.price.toLocaleString()}
+                                        </span>
+
+                                        <div className='flex items-center space-x-2'>
+                                            {listing.status !== "sold" && (
+                                                <button onClick={()=> deleteListing(listing.id)} className='p-2 border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-red-600'>
+                                                    <TrashIcon className='w-5 h-5 text-gray-400 hover:text-red-600 transition' />
+                                                </button>
+                                            )}
+                                            <button onClick={()=> navigate(`/edit-listing/${listing.id}`)} className='p-2 border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-indigo-600'>
+                                                <Edit className='w-5 h-5 text-gray-400 hover:text-indigo-600 transition' />
+                                            </button>
+
+                                            <button onClick={()=> toggleStatus(listing.id)} className='p-2 border border-gray-300 rounded-lg hover:bg-gray-50 '>
+                                                {listing.status === "active" && (
+                                                    <EyeOffIcon className='w-5 h-5 text-gray-400 hover:text-purple-600 transition' />
+                                                )}
+                                                {listing.status !== "active" && (
+                                                    <EyeIcon className='w-5 h-5 text-gray-400 hover:text-purple-600 transition' />
+                                                )}
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -183,8 +269,25 @@ const MyListing = () => {
                 </div>
             )}
 
-            {/*    */}
-            {/*    */}
+            {showCredentialSubmission && (
+                <CredentialSubmission
+                    listing={showCredentialSubmission}
+                    onClose={()=> setShowCredentialSubmission(null)}
+                />
+            )}
+
+            {showWithdrawal && (
+                <WithdrawModal
+                    onClose={()=> setShowWithdrawal(null)}
+                />
+            )}
+
+            {/* Footer Section */}
+            <div className='bg-white border-t border-gray-200 p-4 text-center mt-28'>
+                <p className='text-sm text-gray-500'>
+                    © {new Date().getFullYear()} <span className='text-indigo-600'>FlipEarn</span> . All rights reserved.
+                </p>
+            </div>
 
         </div>
     )
