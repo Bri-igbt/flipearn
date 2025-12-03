@@ -85,7 +85,7 @@ const Navbar = () => {
                                 />
 
                                 <UserButton.Action
-                                    label='my-orders'
+                                    label='My Orders'
                                     labelIcon={<BoxIcon size={16} />}
                                     onClick={() => navigate('/my-orders')}
                                 />

@@ -11,6 +11,14 @@ import Loading from "./pages/Loading.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Chatbox from "./components/Chatbox.jsx";
 import {Toaster} from "react-hot-toast";
+import Layout from "./pages/admin/Layout.jsx";
+import Dashboard from "./pages/admin/Dashboard.jsx";
+import Withdrawal from "./pages/admin/Withdrawal.jsx";
+import AllListings from "./pages/admin/AllListings.jsx";
+import CredentialChange from "./pages/admin/CredentialChange.jsx";
+import CredentialVerify from "./pages/admin/CredentialVerify.jsx";
+import Transactions from "./pages/admin/Transactions.jsx";
+
 
 
 const App = () => {
@@ -29,6 +37,14 @@ const App = () => {
             <Route path='/messages' element={<Messages />} />
             <Route path='/my-orders' element={<MyOrders/>} />
             <Route path='/loading' element={<Loading/>} />
+            <Route path='/admin' element={<Layout />} >
+                <Route index element={<Dashboard />} />
+                <Route path='verify-credentials' element={<CredentialVerify />} />
+                <Route path='change-credentials' element={<CredentialChange />} />
+                <Route path='list-listings' element={<AllListings />} />
+                <Route path='transactions' element={<Transactions />} />
+                <Route path='withdrawal' element={<Withdrawal/>} />
+            </Route>
         </Routes>
         <Chatbox />
     </div>
