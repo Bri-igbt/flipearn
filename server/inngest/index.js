@@ -11,7 +11,7 @@ const syncUserCreation = inngest.createFunction(
     async ({ event }) => {
        const { data } = event
 
-        //check if the user already exist in the database
+        //check if the user already exists in the database
         const user = await prisma.user.findFirst({
             where: {id: data.id}
         })
