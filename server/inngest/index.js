@@ -9,36 +9,39 @@ const syncUserCreation = inngest.createFunction(
     { id: "sync-user-from-clerk" },
     { event: "clerk/user.created" },
     async ({ event }) => {
-       const { data } = event
+        const { data } = event;
 
-        //check if the user already exists in the database
+        // Check if the user already exists in the database
         const user = await prisma.user.findFirst({
-            where: {id: data.id}
-        })
+            where: { id: data.id }
+        });
 
         if (user) {
-            //update user data if it already exists
+            // Update user data if it already exists
             await prisma.user.update({
-                where: {id: data.id},
+                where: { id: data.id },
                 data: {
-                    email: data?.email_addresses[0]?.email_address,
-                    name: data?.first_name + " " + data?.last_name,
-                    image: data?.image_url,
+                    email: data?.email_addresses?.[0]?.email_address || "",
+                    name: `${data?.first_name || ""} ${data?.last_name || ""}`.trim(),
+                    image: data?.image_url || "",
                 }
-            })
+            });
             return;
         }
 
         await prisma.user.create({
-            data: data?.id,
-            email: data?.email_addresses[0]?.email_address,
-            name: data?.first_name + " " + data?.last_name,
-            image: data?.image_url,
-        })
-    },
+            data: {
+                id: data.id,
+                email: data?.email_addresses?.[0]?.email_address || "",
+                name: `${data?.first_name || ""} ${data?.last_name || ""}`.trim(),
+                image: data?.image_url || "",
+                earned: 0,
+                withdrawn: 0,
+            }
+        });
+    }
 );
-
-// Inngest function to delete user from a database
+// Inngest function to delete a user from a database
 const syncUserDeletion = inngest.createFunction(
     { id: "delete-user-from-clerk" },
     { event: "clerk/user.deleted" },
