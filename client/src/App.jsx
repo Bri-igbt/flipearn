@@ -18,11 +18,29 @@ import AllListings from "./pages/admin/AllListings.jsx";
 import CredentialChange from "./pages/admin/CredentialChange.jsx";
 import CredentialVerify from "./pages/admin/CredentialVerify.jsx";
 import Transactions from "./pages/admin/Transactions.jsx";
+import {useAuth, useUser} from "@clerk/clerk-react";
+import {useDispatch} from "react-redux";
+import {useEffect} from "react";
+import {getAllPublicListings, getAllUserListing} from "./app/features/listingSlice.js";
 
 
 
 const App = () => {
     const { pathname } = useLocation();
+    const { getToken } = useAuth();
+    const { user, isLoaded } = useUser()
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getAllPublicListings())
+    }, []);
+
+    useEffect(() => {
+        if(isLoaded && user){
+            // Make sure you're passing the getToken function if required
+            dispatch(getAllUserListing({ getToken }));
+        }
+    }, [isLoaded, user, dispatch, getToken]);
   return (
     <div>
         <Toaster />

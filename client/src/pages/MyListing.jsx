@@ -24,16 +24,17 @@ const MyListing = () => {
     const [showWithdrawal, setShowWithdrawal] = useState(null)
     const [showCredentialSubmission, setShowCredentialSubmission] = useState(null)
 
-    const totalValue = userListings.reduce((sum, listing) => sum + (listing.price || 0), 0);
-    const activeListings = userListings.filter((listing) => listing.status === 'active').length;
-    const soldListings = userListings.filter((listing) => listing.status === 'sold').length;
+    // Safe calculations
+    const totalValue = userListings.reduce((sum, listing) => sum + (listing?.price || 0), 0);
+    const activeListings = userListings.filter((listing) => listing?.status === 'active').length;
+    const soldListings = userListings.filter((listing) => listing?.status === 'sold').length;
 
     const numberFormat = (num) => {
+        if (!num && num !== 0) return "0";
         if(num >=1000000) return (num/1000000).toFixed(1)+'M';
         if(num >=1000) return (num/1000).toFixed(1)+'K';
         return num?.toLocaleString() || "0"
     }
-
     const getStatusIcon = (status) => {
         switch (status) {
             case "active":

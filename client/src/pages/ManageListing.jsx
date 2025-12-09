@@ -1,13 +1,19 @@
 import React, {useEffect, useState} from 'react'
 import {useNavigate, useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import toast from "react-hot-toast";
 import {LoaderIcon, Upload, XIcon} from "lucide-react";
+import {useAuth} from "@clerk/clerk-react";
+import api from "../configs/axios.js";
+import {getAllPublicListings, getAllUserListing} from "../app/features/listingSlice.js";
 
 const ManageListing = () => {
     const {id} = useParams();
     const navigate = useNavigate();
     const { userListings } = useSelector(state => state.listing);
+
+    const {getToken } = useAuth();
+    const dispatch = useDispatch();
 
     const [loadingListing, setLoadingListing] = useState(false)
     const [isEditing, setIsEditing] = useState(false)
@@ -97,6 +103,56 @@ const ManageListing = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        toast.loading("Saving...")
+        const dataCopy = structuredClone(formData);
+        try {
+            if(isEditing) {
+                dataCopy.images = formData.images.filter((image) => typeof image === 'string')
+
+                const formDataInstance = new FormData();
+                formDataInstance.append('accountDetails', JSON.stringify(dataCopy));
+
+                formData.images.filter((image) => typeof image !== 'string').forEach((image) => {
+                    formDataInstance.append('images', image);
+                })
+
+                const token = await getToken();
+
+                const { data } = await api.put('/api/listing', formDataInstance, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                toast.dismissAll();
+                toast.success(data.message);
+                dispatch(getAllUserListing({getToken}))
+                dispatch(getAllPublicListings())
+                navigate('/my-listings')
+
+            } else {
+                delete dataCopy.images;
+                const formDataInstance = new FormData();
+                formDataInstance.append('accountDetails', JSON.stringify(dataCopy));
+                formData.images.forEach((image) => {
+                    formDataInstance.append('images', image);
+                })
+
+                const token = await getToken();
+                const { data } = await api.post('/api/listing', formDataInstance, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                toast.dismissAll();
+                toast.success(data.message);
+                dispatch(getAllUserListing({getToken}))
+                dispatch(getAllPublicListings())
+                navigate('/my-listings')
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     // get the listing data from the store

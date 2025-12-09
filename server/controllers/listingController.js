@@ -68,7 +68,7 @@ export const getAllPublicListings = async (req, res) => {
     try {
         const listings = await prisma.listing.findMany({
             where: {status: 'active'},
-            includes: {owner: true},
+            include: {owner: true},
             orderBy: {createdAt: 'desc'},
         })
 
@@ -87,32 +87,49 @@ export const getAllPublicListings = async (req, res) => {
 //Controller for getting All User Listing
 export const getAllUserListing = async (req, res) => {
     try {
-        const { userId } = await req.auth();
+        const auth = await req.auth();
+        const { userId } = auth;
 
-        //get all listings except deleted
-        const listings = await  prisma.listings.findMany({
-            where: {ownerId: userId, status: {not: 'deleted'}},
-            orderBy: {createdAt: 'desc'}
-        })
+        if (!userId) {
+            return res.status(401).json({ message: 'Unauthorized - No user ID' });
+        }
+
+        const listings = await prisma.listing.findMany({
+            where: {
+                ownerId: userId,
+                status: {
+                    not: 'deleted'
+                }
+            },
+            orderBy: {
+                createdAt: 'desc'
+            }
+        });
+
         const user = await prisma.user.findUnique({
-            where: {id: userId}
-        })
+            where: { id: userId }
+        });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
 
         const balance = {
-            earned: user.earned,
-            withdrawn: user.withdrawn,
-            available: user.earned - user.withdrawn
-        }
+            earned: user.earned || 0,
+            withdrawn: user.withdrawn || 0,
+            available: (user.earned || 0) - (user.withdrawn || 0)
+        };
 
-        if(!listings || listings.length === 0) {
-            return res.json({ listings: [], balance })
-        }
-        return res.json({ listings, balance })
+        return res.json({
+            success: true,
+            listings: listings || [],
+            balance
+        });
 
     } catch(err) {
         console.log(err);
         return res.status(500).json(
-            { message: err.message || err.code }
+            { message: err.message || err.code}
         )
     }
 }

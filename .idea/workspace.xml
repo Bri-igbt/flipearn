@@ -5,10 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7ed5efb8-f366-4fa8-aebe-77434c24bfbb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/server/controllers/chatController.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/routes/listingRoutes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/configs/axios.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/routes/chatRoutes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/.env" beforeDir="false" afterPath="$PROJECT_DIR$/client/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/app/features/listingSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/app/features/listingSlice.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/ManageListing.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ManageListing.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/MyListing.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/MyListing.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/configs/prisma.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/configs/prisma.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/controllers/chatController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/chatController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/controllers/listingController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/listingController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/middlewares/authMiddleware.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/middlewares/authMiddleware.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -79,7 +89,7 @@
       <workItem from="1763653332684" duration="682000" />
       <workItem from="1763654647513" duration="17438000" />
       <workItem from="1763973868005" duration="35939000" />
-      <workItem from="1764151880062" duration="141294000" />
+      <workItem from="1764151880062" duration="153223000" />
     </task>
     <servers />
   </component>
@@ -130,13 +140,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/pages/ManageListing.jsx</url>
-          <line>65</line>
+          <line>71</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/pages/ManageListing.jsx</url>
-          <line>322</line>
+          <line>378</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="6" />
         </line-breakpoint>
