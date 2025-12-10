@@ -1,18 +1,21 @@
 export const protect = async (req, res, next) => {
     try {
-        // Get auth data from request
         const authData = req.auth();
 
         if (!authData.userId) {
             return res.status(401).json({ message: 'Unauthorized' });
         }
 
-        // Set user info
         req.userId = authData.userId;
-        req.user = authData.user; // If available
 
-        // Check plan from session claims
-        const plan = authData.sessionClaims?.metadata?.plan || 'free';
+        // Extract plan from 'pla' field
+        const planClaim = authData.sessionClaims?.pla || 'u:free';
+
+        // Remove 'u:' prefix if present
+        const plan = planClaim.startsWith('u:')
+            ? planClaim.substring(2)
+            : planClaim;
+
         req.plan = plan;
 
         next();

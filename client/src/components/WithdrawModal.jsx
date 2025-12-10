@@ -1,7 +1,15 @@
 import React, {useState} from 'react'
 import {XIcon} from "lucide-react";
+import {useAuth} from "@clerk/clerk-react";
+import {useDispatch} from "react-redux";
+import toast from "react-hot-toast";
+import api from "../configs/axios.js";
+import {getAllUserListing} from "../app/features/listingSlice.js";
 
 const WithdrawModal = ({ onClose }) => {
+    const { getToken } = useAuth()
+    const dispatch = useDispatch()
+
     const [amount, setAmount] = useState("")
     const [account, setAccount] = useState([
         {type: "text", name: "Account Holder Name", value: ""},
@@ -12,8 +20,41 @@ const WithdrawModal = ({ onClose }) => {
         {type: "text", name: "Branch", value: ""},
     ])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        try {
+            //check if there is at least one field
+            if(account.length === 0) {
+                return toast.error('Please add at least one field')
+            }
+
+            //check all field are field
+            for(const field of account) {
+                if(!field.value) {
+                    return toast.error(`Please fill in the ${field.name} field`)
+                }
+            }
+
+            const confirm = window.confirm('Are you sure you want to submit')
+            if(!confirm) return;
+
+            const token = await getToken()
+            const { data } = await api.post('/api/listing/withdraw', {account, amount: parseInt(amount)}, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+
+            toast.dismiss();
+            toast.success(data.message || 'Credentials submitted successfully');
+
+            dispatch(getAllUserListing({ getToken }));
+            onClose();
+
+        } catch (err) {
+            toast.dismissAll();
+            toast.error(err.message || err?.response?.data?.message);
+        }
     }
     return (
         <div className='fixed inset-0 flex items-center justify-center bg-black/70 bg-opacity-50 backdrop-blur z-100 sm:p-4'>

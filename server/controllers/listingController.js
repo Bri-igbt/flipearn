@@ -138,69 +138,127 @@ export const getAllUserListing = async (req, res) => {
 export const updatingListing = async (req, res) => {
     try {
         const { userId } = await req.auth();
-        const accountDetails = JSON.parse(req.body.accountDetails)
+        const accountDetails = JSON.parse(req.body.accountDetails || '{}');
 
-        if(req.file.length + accountDetails.images.length > 5) {
-            return res.status(400).json({
-                message: 'You can only upload 5 images at a time'
-            });
+        if (!accountDetails.id) {
+            return res.status(400).json({ message: 'Listing ID is required' });
         }
 
-        accountDetails.followers_count = parseFloat(accountDetails.followers_count)
-        accountDetails.engagement_rate = parseFloat(accountDetails.engagement_rate)
-        accountDetails.monthly_views = parseFloat(accountDetails.monthly_views)
-        accountDetails.price = parseFloat(accountDetails.price)
-        accountDetails.platform = accountDetails.platform.toLowerCase()
-        accountDetails.niche = accountDetails.niche.toLowerCase()
+        const existingListing = await prisma.listing.findFirst({
+            where: {
+                id: accountDetails.id,
+                ownerId: userId
+            }
+        });
 
-        accountDetails.username.startsWith('@') ? accountDetails.username = accountDetails.username.slice(1) : null;
-
-        const listing = await prisma.listing.update({
-            where: {id: accountDetails.id, ownerId: userId},
-            data: accountDetails,
-        })
-
-        if(!listing) {
-            return res.status(400).json({ message: 'Listing not found' });
+        if (!existingListing) {
+            return res.status(404).json({ message: 'Listing not found or unauthorized' });
         }
 
-        if(listing.status === "sold") {
+        if (existingListing.status === "sold") {
             return res.status(400).json({ message: "You can't update a sold listing" });
         }
 
-        if(req.file.length > 0) {
-            const uploadImages = req.files.map(async (file) => {
-                const response = await imageKit.files.upload({
-                    file: fs.createReadStream(file.path),
-                    fileName: `${Date.now()}.png`,
-                    folder: 'flip-earn',
-                    transformation: {pre: "w-1280, h-auto" }
-                });
-                return response.url;
-            })
+        const existingImages = accountDetails.images || [];
+        const newImagesCount = req.files ? req.files.length : 0;
 
-            // wait for all uploads to complete
-            const images = await Promise.all(uploadImages);
-
-            const listing = await prisma.listing.update({
-                where: {id: accountDetails.id, ownerId: userId},
-                data: {
-                    ownerId: userId,
-                    ...accountDetails,
-                    images: [...accountDetails.images, ...images]
-                }
-            })
-
-            return res.json({ message: "Account Updated Successfully", listing })
+        if (existingImages.length + newImagesCount > 5) {
+            return res.status(400).json({
+                message: 'Maximum 5 images allowed. You have ' +
+                    existingImages.length + ' existing and tried to add ' +
+                    newImagesCount + ' new images.'
+            });
         }
 
-        return res.json({ message: "Account Updated Successfully", listing })
+        const updateData = {
+            title: accountDetails.title,
+            description: accountDetails.description,
+            username: accountDetails.username?.startsWith('@')
+                ? accountDetails.username.slice(1)
+                : accountDetails.username,
+            platform: accountDetails.platform?.toLowerCase(),
+            niche: accountDetails.niche?.toLowerCase(),
+            category: accountDetails.category,
+            followers_count: parseFloat(accountDetails.followers_count) || 0,
+            engagement_rate: parseFloat(accountDetails.engagement_rate) || 0,
+            monthly_views: parseFloat(accountDetails.monthly_views) || 0,
+            price: parseFloat(accountDetails.price) || 0,
+            condition: accountDetails.condition,
+
+            verified: accountDetails.verified || false,
+            monetized: accountDetails.monetized || false,
+            country: accountDetails.country || null,
+            age_range: accountDetails.age_range || ''
+        };
+
+        if (req.files && req.files.length > 0) {
+            const uploadImages = req.files.map(async (file) => {
+                try {
+                    const response = await imageKit.files.upload({
+                        file: fs.createReadStream(file.path),
+                        fileName: `${Date.now()}_${file.originalname}`,
+                        folder: 'flip-earn',
+                        transformation: { pre: "w-1280, h-auto" }
+                    });
+                    return response.url;
+                } catch (uploadError) {
+                    console.error('Image upload failed:', uploadError);
+                    throw new Error('Failed to upload images');
+                }
+            });
+
+            const newImageUrls = await Promise.all(uploadImages);
+            updateData.images = [...existingImages, ...newImageUrls];
+        } else {
+            // Keep existing images
+            updateData.images = existingImages;
+        }
+
+        // Clean up undefined/null fields
+        Object.keys(updateData).forEach(key => {
+            if (updateData[key] === undefined) {
+                delete updateData[key];
+            }
+        });
+
+        // Update the listing
+        const updatedListing = await prisma.listing.update({
+            where: {
+                id: accountDetails.id,
+                ownerId: userId
+            },
+            data: updateData
+        });
+
+        // Clean up uploaded files
+        if (req.files && req.files.length > 0) {
+            req.files.forEach(file => {
+                fs.unlink(file.path, (err) => {
+                    if (err) console.error('Failed to delete temp file:', err);
+                });
+            });
+        }
+
+        return res.json({
+            success: true,
+            message: "Account updated successfully",
+            listing: updatedListing
+        });
 
     } catch(err) {
-        console.log(err);
-        return res.status(500).json(
-            { message: err.message || err.code}
-        )
+        console.error('Error in updatingListing:', err);
+
+        // Clean up files on error
+        if (req.files && req.files.length > 0) {
+            req.files.forEach(file => {
+                fs.unlink(file.path, () => {});
+            });
+        }
+
+        return res.status(500).json({
+            success: false,
+            message: err.message || 'Failed to update listing'
+        });
     }
 }
 
@@ -238,40 +296,69 @@ export const toggleStatus = async (req, res) => {
     }
 }
 
-// Controller for deleting a listing
+//Controller for deleting a listing
 export const deleteUserListing = async (req, res) => {
     try {
         const { listingId } = req.params;
         const { userId } = await req.auth();
 
-        const listing = await prisma.listing.findFirst({
-            where: {id: listingId, ownerId: userId},
-            includes: {owner: true},
-        })
+        // OPTIMIZATION: Direct update with condition check
+        const result = await prisma.$transaction(async (tx) => {
+            // 1. Check and update in single transaction
+            const listing = await tx.listing.findFirst({
+                where: {
+                    id: listingId,
+                    ownerId: userId,
+                    status: { not: 'sold' } // Filter sold listings early
+                },
+                select: {
+                    isCredentialChanged: true,
+                    owner: { select: { email: true } }
+                }
+            });
 
-        if(!listing) {
-            return res.status(404).json({ message: 'Listing not found' });
+            if (!listing) {
+                throw new Error('NOT_FOUND');
+            }
+
+            // 2. Update to deleted
+            await tx.listing.update({
+                where: { id: listingId },
+                data: { status: 'deleted' }
+            });
+
+            return listing;
+        });
+
+        // Send response immediately
+        res.json({
+            success: true,
+            message: 'Listing deleted successfully'
+        });
+
+        // Fire and forget email (after response sent)
+        if (result.isCredentialChanged) {
+            setTimeout(() => {
+                sendEmailNotification(result.owner.email, listingId)
+                    .catch(err => console.error('Email error:', err));
+            }, 0);
         }
-
-        if(listing.status === 'sold') {
-            return res.status(400).json({ message: "sold listing can't be deleted" });
-        }
-
-        // if the password has been changed, send the new password to the owner
-        if(listing.isCredentialChanged) {
-            //send email to owner
-        }
-
-        await prisma.listing.update({
-            where: {id: listingId},
-            data: {status: 'deleted'}
-        })
 
     } catch (err) {
-        console.log(err);
-        return res.status(500).json({ message: err.message || err.code });
+        if (err.message === 'NOT_FOUND') {
+            return res.status(404).json({
+                success: false,
+                message: 'Listing not found or cannot be deleted'
+            });
+        }
+
+        console.error('Delete error:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to delete listing'
+        });
     }
-}
+};
 
 // Controller for adding a credential to a listing
 export const addCredentials = async (req, res) => {
@@ -312,30 +399,63 @@ export const addCredentials = async (req, res) => {
 // Controller for markFeatured to a listing
 export const markFeatured = async (req, res) => {
     try {
-        const {id} = req.params;
-        const {userId} = await req.auth();
+        const { id } = req.params;
+        const { userId } = await req.auth();
 
-        if(req.plan !== 'premium') {
-            return res.status(400).json({ message: 'Premium plan required to mark featured' });
+        // Check premium plan
+        if (req.plan !== 'premium') {
+            return res.status(403).json({
+                success: false,
+                message: 'Premium plan required to feature listings'
+            });
         }
 
-        // Unset all other featured listings
-        await prisma.listing.update({
-            where: { ownerId: userId },
-            data: { featured: false },
-        })
+        // First verify the listing exists and belongs to this user
+        const listing = await prisma.listing.findFirst({
+            where: {
+                id: id,
+                ownerId: userId,
+                status: 'active'
+            }
+        });
 
-        // Mark the listing as featured
-        await prisma.listing.update({
-            where: { id },
-            data: { featured: true },
-        })
+        if (!listing) {
+            return res.status(404).json({
+                success: false,
+                message: 'Listing not found or not authorized'
+            });
+        }
 
-        return res.json({ message: 'Listing marked as featured successfully' });
+        await prisma.listing.updateMany({
+            where: {
+                ownerId: userId,
+                featured: true // Only update featured ones
+            },
+            data: {
+                featured: false
+            }
+        });
+
+        // Mark the specific listing as featured
+        const updatedListing = await prisma.listing.update({
+            where: { id: id },
+            data: {
+                featured: true
+            }
+        });
+
+        return res.json({
+            success: true,
+            message: 'Listing marked as featured successfully',
+            listing: updatedListing
+        });
 
     } catch (err) {
-        console.log(err);
-        return res.status(500).json({ message: err.message || err.code });
+        console.error('Error marking featured:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to feature listing'
+        });
     }
 }
 
@@ -346,7 +466,7 @@ export const getAllUserOrders = async (req, res) => {
 
         let orders = await prisma.transaction.findMany({
             where: {userId, isPaid: true},
-            includes: {listing: true}
+            include: {listing: true}
         })
 
         if(!orders || orders.length === 0) {

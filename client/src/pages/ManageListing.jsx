@@ -103,57 +103,102 @@ const ManageListing = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        toast.loading("Saving...")
-        const dataCopy = structuredClone(formData);
+
+        // Validate required fields
+        if (!formData.title || !formData.price || !formData.platform) {
+            toast.error("Please fill in all required fields");
+            return;
+        }
+
+        toast.loading(isEditing ? "Updating listing..." : "Creating listing...");
+
         try {
-            if(isEditing) {
-                dataCopy.images = formData.images.filter((image) => typeof image === 'string')
+            const token = await getToken();
 
+            if (isEditing) {
+                // EDIT MODE - Use 'id' from useParams()
+                if (!id) {
+                    toast.error("Listing ID is required for editing");
+                    return;
+                }
+
+                // Create a clean copy with the ID
+                const dataCopy = { ...formData, id: id }; // Use 'id' here, not 'listingId'
+
+                // Separate existing images from new files
+                const existingImages = formData.images.filter((image) => typeof image === 'string');
+                const newImages = formData.images.filter((image) => typeof image !== 'string');
+
+                // Prepare FormData
                 const formDataInstance = new FormData();
-                formDataInstance.append('accountDetails', JSON.stringify(dataCopy));
+                formDataInstance.append('accountDetails', JSON.stringify({
+                    ...dataCopy,
+                    images: existingImages
+                }));
 
-                formData.images.filter((image) => typeof image !== 'string').forEach((image) => {
+                // Add new images
+                newImages.forEach((image) => {
                     formDataInstance.append('images', image);
-                })
+                });
 
-                const token = await getToken();
-
+                // Make PUT request
                 const { data } = await api.put('/api/listing', formDataInstance, {
                     headers: {
-                        Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data'
                     }
-                })
-                toast.dismissAll();
-                toast.success(data.message);
-                dispatch(getAllUserListing({getToken}))
-                dispatch(getAllPublicListings())
-                navigate('/my-listings')
+                });
+
+                toast.dismiss();
+                toast.success(data.message || "Listing updated successfully");
+
+                // Refresh data
+                dispatch(getAllUserListing({ getToken })); // Make sure this matches your thunk
+                dispatch(getAllPublicListings());
+                navigate('/my-listings');
 
             } else {
-                delete dataCopy.images;
+                // CREATE MODE
+                const dataCopy = { ...formData };
+                delete dataCopy.images; // Remove images from JSON data
+
                 const formDataInstance = new FormData();
                 formDataInstance.append('accountDetails', JSON.stringify(dataCopy));
+
+                // Add all images (they should all be files for new listing)
                 formData.images.forEach((image) => {
                     formDataInstance.append('images', image);
-                })
+                });
 
-                const token = await getToken();
                 const { data } = await api.post('/api/listing', formDataInstance, {
                     headers: {
-                        Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data'
                     }
-                })
-                toast.dismissAll();
-                toast.success(data.message);
-                dispatch(getAllUserListing({getToken}))
-                dispatch(getAllPublicListings())
-                navigate('/my-listings')
+                });
+
+                toast.dismiss();
+                toast.success(data.message || "Listing created successfully");
+
+                // Refresh data
+                dispatch(getAllUserListing({ getToken }));
+                dispatch(getAllPublicListings());
+                navigate('/my-listings');
             }
 
         } catch (error) {
-            console.log(error)
+            toast.dismiss();
+
+            // Show error message
+            const errorMessage = error.response?.data?.message ||
+                error.response?.data?.error ||
+                error.message ||
+                "Something went wrong";
+
+            toast.error(errorMessage);
+            console.error("Submit error:", error.response?.data || error);
         }
-    }
+    };
 
     // get the listing data from the store
     useEffect(() => {

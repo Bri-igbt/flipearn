@@ -1,17 +1,76 @@
 import React, {useState} from 'react'
 import toast from "react-hot-toast";
 import {CirclePlusIcon, XIcon} from "lucide-react";
+import {useAuth} from "@clerk/clerk-react";
+import {useDispatch} from "react-redux";
+import api from "../configs/axios.js";
+import {getAllUserListing} from "../app/features/listingSlice.js";
 
 const CredentialSubmission = ({ onClose, listing}) => {
+    const { getToken } = useAuth()
+    const dispatch = useDispatch();
+
     const[newField, setNewField] = useState('');
     const [credential, setCredential] = useState([
         {type: 'email', value: '', name: 'Email'},
         {type: 'password', value: '', name: 'Password'},
     ])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-    }
+
+        try {
+            // Check if there is at least one field
+            if (credential.length === 0) {
+                return toast.error('Please add at least one field');
+            }
+
+            // Check if all required fields are filled
+            for (const cred of credential) {
+                if (!cred.value || cred.value.trim() === '') {
+                    return toast.error(`Please fill in the ${cred.name} field`);
+                }
+            }
+
+            const confirm = window.confirm(
+                'Credential will be verified & changed post submission. Are you sure you want to submit?'
+            );
+
+            if (!confirm) return;
+
+            toast.loading('Submitting credentials...');
+
+            const token = await getToken();
+            const { data } = await api.post(
+                '/api/listing/add-credential',
+                {
+                    credential,
+                    listingId: listing.id
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            toast.dismiss();
+            toast.success(data.message || 'Credentials submitted successfully');
+
+            dispatch(getAllUserListing({ getToken }));
+            onClose();
+
+        } catch (err) {
+            toast.dismiss();
+
+            const errorMessage = err.response?.data?.message ||
+                err.message ||
+                'Failed to submit credentials';
+
+            toast.error(errorMessage);
+            console.error('Submit credential error:', err.response?.data || err);
+        }
+    };
 
     const handleField = () => {
         const name = newField.trim();

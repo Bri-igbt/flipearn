@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {
     ArrowDownCircleIcon, Ban, BanIcon,
@@ -15,11 +15,18 @@ import StatsCard from "../components/StatsCard.jsx";
 import {platformIcons} from "../assets/assets.jsx";
 import CredentialSubmission from "../components/CredentialSubmission.jsx";
 import WithdrawModal from "../components/WithdrawModal.jsx";
+import {useAuth} from "@clerk/clerk-react";
+import toast from "react-hot-toast";
+import api from "../configs/axios.js";
+import {getAllPublicListings, getAllUserListing} from "../app/features/listingSlice.js";
 
 const MyListing = () => {
     const {userListings, balance} = useSelector((state) => state.listing);
     const currency = import.meta.env.VITE_CURRENCY || '$';
     const navigate = useNavigate();
+
+    const { getToken } = useAuth()
+    const dispatch = useDispatch();
 
     const [showWithdrawal, setShowWithdrawal] = useState(null)
     const [showCredentialSubmission, setShowCredentialSubmission] = useState(null)
@@ -66,16 +73,86 @@ const MyListing = () => {
     }
 
     const toggleStatus = async (listingId) => {
+        try {
+            toast.loading('Updating Listing Status')
+            const token = await getToken();
+            const { data } = await api.put(`/api/listing/${listingId}/status`, {}, {
+                headers: {Authorization: `Bearer ${token}`}
+            })
 
+            dispatch(getAllUserListing({ getToken }))
+            dispatch(getAllPublicListings())
+
+            toast.dismissAll();
+            toast.success(data.message)
+
+        } catch (err) {
+            toast.dismissAll();
+            toast.error(err.message || err?.response?.data?.message);
+        }
     }
 
     const deleteListing = async (listingId) => {
+        try {
+            const confirm = window.confirm(
+                'Are you sure you want to delete this listing? If credentials have been changed, the new credentials will be sent to your email.'
+            );
 
-    }
+            if (!confirm) return;
+
+            toast.loading('Deleting listing...');
+            const token = await getToken();
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
+            const { data } = await api.delete(`/api/listing/${listingId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                signal: controller.signal
+            });
+
+            clearTimeout(timeoutId);
+            toast.dismiss();
+            toast.success(data.message || 'Listing deleted successfully');
+            dispatch(getAllUserListing({ getToken }));
+            dispatch(getAllPublicListings());
+
+
+        } catch (err) {
+            toast.dismiss();
+
+            const errorMessage = err.response?.data?.message ||
+                err.response?.data?.error ||
+                err.message ||
+                'Failed to delete listing';
+
+            toast.error(errorMessage);
+            console.error('Delete error:', err.response?.data || err);
+        }
+    };
 
     const markAsFeatured = async (listingId) => {
+        try {
+            toast.loading('Featuring listing...');
+            const token = await getToken();
+            const { data } = await api.put(`/api/listing/featured/${listingId}`, {}, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
 
-    }
+            toast.dismiss();
+            toast.success(data.message || 'Listing featured successfully');
+            dispatch(getAllUserListing({ getToken }));
+            dispatch(getAllPublicListings());
+
+        } catch (err) {
+            toast.dismissAll();
+            toast.error(err.message || err?.response?.data?.message);
+        }
+    };
 
 
 

@@ -1,23 +1,44 @@
 import React, {useEffect, useState} from 'react'
-import {dummyOrders, platformIcons} from "../assets/assets.jsx";
+import {platformIcons} from "../assets/assets.jsx";
 import toast from "react-hot-toast";
 import {CheckCircle, CheckCircle2, ChevronDown, ChevronUp, Copy, DollarSign, Loader2Icon} from "lucide-react";
 import {format} from "date-fns";
+import {useAuth, useUser} from "@clerk/clerk-react";
+import api from "../configs/axios.js";
 
 const MyOrders = () => {
+    const {getToken} = useAuth()
+    const {user, isLoaded} = useUser()
+
     const currency = import.meta.env.VITE_CURRENCY || '$'
     const [orders, setOrders] = useState([])
     const [loading, setLoading] = useState(true)
     const [expandedId, setExpandedId] = useState(null)
 
     const fetchOrders = async () => {
-        setOrders(dummyOrders)
-        setLoading(false)
+      try {
+          setLoading(false)
+          const token = await getToken();
+          const { data } = await api.get('/api/listing/user-orders', {
+              headers: {
+                  Authorization: `Bearer ${token}`
+              }
+          })
+          setOrders(data.orders)
+
+      } catch (err) {
+          toast.dismissAll();
+          toast.error(err.message || err?.response?.data?.message);
+      } finally {
+          setLoading(false)
+      }
     }
 
     useEffect(() => {
-        fetchOrders()
-    }, []);
+        if(user && isLoaded) {
+            fetchOrders()
+        }
+    }, [isLoaded, user]);
 
 
     const maskPassword = (val, type) => {

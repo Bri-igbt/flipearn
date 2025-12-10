@@ -20,12 +20,12 @@ export const getChat = async (req, res) => {
         if(chatId) {
             existingChat = await prisma.chat.findFirst({
                 where: {id: chatId, OR: [{ chatUserId: userId }, { ownerUserId: userId }]},
-                includes: {listing: true, ownerUser: true, chatUser: true, messages: true}
+                include: {listing: true, ownerUser: true, chatUser: true, messages: true}
             })
         } else {
             existingChat = await prisma.chat.findFirst({
                 where: {listingId, chatUserId: userId, ownerUserId: listing.ownerId},
-                includes: {listing: true, ownerUser: true, chatUser: true, messages: true}
+                include: {listing: true, ownerUser: true, chatUser: true, messages: true}
             })
         }
 
@@ -56,7 +56,7 @@ export const getChat = async (req, res) => {
 
         const chatWithData = await prisma.chat.findUnique({
             where: {id: newChat.id},
-            includes: {
+            include: {
                 listing: true,
                 ownerUser: true,
                 chatUser: true,
@@ -78,7 +78,7 @@ export const getAllUserChat = async (req, res) => {
         const {userId} = await req.auth();
         const chats = await prisma.chat.findMany({
             where: {OR: [{chatUserId: userId}, {ownerUserId: userId}]},
-            includes: {listing: true, ownerUser: true, chatUser: true, messages: true},
+            include: {listing: true, ownerUser: true, chatUser: true, messages: true},
             orderBy: {updatedAt: 'desc'}
         })
 
@@ -96,44 +96,75 @@ export const getAllUserChat = async (req, res) => {
 // Controller for adding messages to chat
 export const sendChatMessage = async (req, res) => {
     try {
-        const {userId} = await req.auth();
-        const {chatId, message} = req.body;
+        const { userId } = await req.auth();
+        const { chatId, message } = req.body;
+
+        if (!chatId || !message?.trim()) {
+            return res.status(400).json({
+                success: false,
+                message: 'Chat ID and message are required'
+            });
+        }
 
         const chat = await prisma.chat.findFirst({
             where: {
-                AND: [{id: chatId}, {OR: [{chatUserId: userId}, {ownerUserId: userId}]}],
-                include: {listing: true, ownerUser: true, chatUser: true}
+                id: chatId,
+                OR: [
+                    { chatUserId: userId },
+                    { ownerUserId: userId }
+                ]
+            },
+            include: {
+                listing: true,
+                ownerUser: true,
+                chatUser: true
             }
-        })
+        });
 
-        if(!chat) {
-            return res.status(404).json({ message: 'Chat not found' });
-        } else if(chat.list.status !== 'active'){
-            return res.status(400).json({ message: `Listing is ${chat.list.status}` });
+        if (!chat) {
+            return res.status(404).json({
+                success: false,
+                message: 'Chat not found'
+            });
         }
-        const newMessage = {
-            message,
-            sender_id: userId,
-            chatId,
-            createdAt: new Date()
-        }
-        await prisma.message.create({
-            data: newMessage
-        })
 
-        res.json({ message: 'Message sent successfully' });
+        if (chat.listing.status !== 'active') {
+            return res.status(400).json({
+                success: false,
+                message: `Listing is ${chat.listing.status}`
+            });
+        }
+
+        const newMessage = await prisma.message.create({
+            data: {
+                message: message.trim(),
+                sender_id: userId,
+                chatId: chatId
+            }
+        });
 
         await prisma.chat.update({
-            where: {id: chatId},
+            where: { id: chatId },
             data: {
-                lastMessage: newMessage.message,
+                lastMessage: message.trim(),
                 isLastMessageRead: false,
-                lastMessageSentId: userId
+                lastMessageSenderId: userId,
+                updatedAt: new Date()
             }
-        })
+        });
+
+        return res.json({
+            success: true,
+            message: 'Message sent successfully',
+            newMessage: newMessage
+        });
 
     } catch(err) {
-        console.log(err)
-        return res.status(500).json({ message: err.message || err.code });
+        console.error('Error in sendChatMessage:', err);
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to send message',
+            error: process.env.NODE_ENV === 'development' ? err.message : undefined
+        });
     }
 }
