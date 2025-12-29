@@ -429,7 +429,7 @@ export const markFeatured = async (req, res) => {
         await prisma.listing.updateMany({
             where: {
                 ownerId: userId,
-                featured: true // Only update featured ones
+                featured: true
             },
             data: {
                 featured: false

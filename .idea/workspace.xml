@@ -6,46 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="7ed5efb8-f366-4fa8-aebe-77434c24bfbb" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Chatbox.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Chatbox.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/CredentialSubmission.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/CredentialSubmission.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/WithdrawModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/WithdrawModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/ManageListing.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/ManageListing.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/Messages.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Messages.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/MyListing.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/MyListing.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/MyOrders.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/MyOrders.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/controllers/chatController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/chatController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/.env" beforeDir="false" afterPath="$PROJECT_DIR$/client/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/controllers/listingController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/controllers/listingController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/middlewares/authMiddleware.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/middlewares/authMiddleware.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/node_modules/.package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/server/node_modules/react/LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/server/node_modules/react/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/cjs/react-compiler-runtime.development.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/cjs/react-compiler-runtime.production.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/cjs/react-compiler-runtime.profiling.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/cjs/react-jsx-dev-runtime.development.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/node_modules/react/cjs/react-jsx-dev-runtime.development.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/cjs/react-jsx-dev-runtime.production.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/cjs/react-jsx-dev-runtime.profiling.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/cjs/react-jsx-dev-runtime.react-server.development.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/cjs/react-jsx-dev-runtime.react-server.production.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/cjs/react-jsx-runtime.development.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/node_modules/react/cjs/react-jsx-runtime.development.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/cjs/react-jsx-runtime.production.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/cjs/react-jsx-runtime.profiling.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/cjs/react-jsx-runtime.react-server.development.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/cjs/react-jsx-runtime.react-server.production.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/cjs/react.development.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/node_modules/react/cjs/react.development.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/cjs/react.production.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/cjs/react.react-server.development.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/cjs/react.react-server.production.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/compiler-runtime.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/node_modules/react/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/jsx-dev-runtime.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/node_modules/react/jsx-dev-runtime.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/jsx-dev-runtime.react-server.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/jsx-runtime.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/node_modules/react/jsx-runtime.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/jsx-runtime.react-server.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/node_modules/react/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/node_modules/react/react.react-server.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,26 +36,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/Users/mac/Desktop/flipearn/client/public",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/mac/Desktop/Projects/FLIPEARN&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/client/public" />
@@ -115,7 +78,11 @@
       <workItem from="1763653332684" duration="682000" />
       <workItem from="1763654647513" duration="17438000" />
       <workItem from="1763973868005" duration="35939000" />
-      <workItem from="1764151880062" duration="169233000" />
+      <workItem from="1764151880062" duration="170865000" />
+      <workItem from="1765640295661" duration="424000" />
+      <workItem from="1766055582619" duration="93000" />
+      <workItem from="1766076841680" duration="11000" />
+      <workItem from="1767006829136" duration="1087000" />
     </task>
     <servers />
   </component>
@@ -149,42 +116,35 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/pages/ListingDetails.jsx</url>
           <line>60</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/pages/ListingDetails.jsx</url>
           <line>59</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/pages/ListingDetails.jsx</url>
           <line>102</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/pages/ManageListing.jsx</url>
           <line>71</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/pages/ManageListing.jsx</url>
           <line>423</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/pages/MyListing.jsx</url>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/server/controllers/listingController.js</url>
           <line>299</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>

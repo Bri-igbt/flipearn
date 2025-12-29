@@ -19,6 +19,20 @@ app.use("/api/inngest", serve({ client: inngest, functions }));
 app.use("/api/listing", listingRouter)
 app.use("/api/chat", chatRouter)
 
+// Export the app for serverless platforms
+export default app;
+
+// Only start the server when running in a traditional server environment
+const isServerlessEnv = Boolean(
+  process.env.VERCEL ||
+  process.env.NETLIFY ||
+  process.env.AWS_LAMBDA_FUNCTION_NAME ||
+  process.env.K_SERVICE || // Cloud Run
+  process.env.FUNCTION_TARGET // Google Cloud Functions
+);
+
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+if (!isServerlessEnv) {
+  app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+}
