@@ -1,6 +1,6 @@
- <img src="https://res.cloudinary.com/dhdcmkuhx/image/upload/v1767365048/flipearnlogo_ai0vmv.png" width="100%" height="500px" alt="image" />
 
 # FlipEarn
+ <img src="https://res.cloudinary.com/dhdcmkuhx/image/upload/v1767365048/flipearnlogo_ai0vmv.png" width="100%" height="500px" alt="image" />
 
 A secure B2C and C2C marketplace for buying and selling social media and digital platform accounts. FlipEarn provides a safe, efficient, and reliable environment for transferring high‑value digital assets. It consolidates a fragmented market into a single trusted platform supporting Instagram, YouTube, X (Twitter), LinkedIn, TikTok, Snapchat, Discord, and more.
 
